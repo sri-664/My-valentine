@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>💖 For You, My Love</title>
+  <style>
+    @import url('C:\Users\Srima\Desktop\valentine\yourphoto.jpeg');
+    :root{--pink:#ff6b9d;--purple:#c084fc;--gold:#f9c74f;}
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Quicksand',sans-serif;background:linear-gradient(135deg,#0d0015 0%,#1a0030 40%,#0d001a 100%);min-height:100vh;overflow-x:hidden;color:white;}
+    #stars-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;}
+    .heart-rain{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;overflow:hidden;}
+    .h-drop{position:absolute;top:-40px;animation:fallDown linear infinite;opacity:.6;}
+    @keyframes fallDown{0%{transform:translateY(0) rotate(0deg);opacity:.6;}100%{transform:translateY(110vh) rotate(360deg);opacity:0;}}
+    .page{display:none;position:relative;z-index:10;min-height:100vh;align-items:center;justify-content:center;flex-direction:column;padding:20px;animation:fadeInUp .7s ease forwards;}
+    .page.active{display:flex;}
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+    .card{background:rgba(255,255,255,.06);backdrop-filter:blur(20px);border:1px solid rgba(255,105,180,.3);border-radius:30px;padding:40px 35px;max-width:580px;width:100%;text-align:center;box-shadow:0 0 60px rgba(255,105,180,.15),0 20px 60px rgba(0,0,0,.5);}
+    .intro-emoji{font-size:4rem;animation:pulse 1.5s ease-in-out infinite;}
+    @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.15);}}
+    .intro-title{font-family:'Dancing Script',cursive;font-size:clamp(2rem,6vw,3.2rem);background:linear-gradient(135deg,#ff6b9d,#f9c74f,#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:15px 0 10px;line-height:1.2;}
+    .intro-sub{color:rgba(255,255,255,.75);font-size:1rem;margin-bottom:30px;line-height:1.6;}
+    .btn{display:inline-block;padding:14px 38px;background:linear-gradient(135deg,var(--pink),var(--purple));border:none;border-radius:50px;color:white;font-family:'Quicksand',sans-serif;font-weight:600;font-size:1rem;cursor:pointer;transition:all .3s;box-shadow:0 5px 25px rgba(255,107,157,.45);}
+    .btn:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 10px 35px rgba(255,107,157,.6);}
+    .timeline-title{font-family:'Dancing Script',cursive;font-size:clamp(1.8rem,5vw,2.8rem);color:var(--gold);margin-bottom:8px;}
+    .timeline-sub{color:rgba(255,255,255,.65);font-size:.9rem;margin-bottom:28px;}
+    .tl-item{display:flex;align-items:flex-start;gap:18px;margin-bottom:22px;text-align:left;opacity:0;transform:translateX(-30px);animation:slideIn .6s ease forwards;}
+    .tl-item:nth-child(1){animation-delay:.1s}.tl-item:nth-child(2){animation-delay:.3s}.tl-item:nth-child(3){animation-delay:.5s}.tl-item:nth-child(4){animation-delay:.7s}.tl-item:nth-child(5){animation-delay:.9s}
+    @keyframes slideIn{to{opacity:1;transform:translateX(0);}}
+    .tl-icon{font-size:1.9rem;min-width:45px;text-align:center;}
+    .tl-text h3{font-size:1rem;color:var(--pink);font-weight:600;}
+    .tl-text p{font-size:.88rem;color:rgba(255,255,255,.72);margin-top:3px;line-height:1.5;}
+    .quiz-count{color:rgba(255,255,255,.5);font-size:.85rem;margin-bottom:6px;}
+    .quiz-title{font-family:'Dancing Script',cursive;font-size:clamp(1.6rem,5vw,2.4rem);color:var(--pink);margin-bottom:22px;}
+    .quiz-q{font-size:1.05rem;color:rgba(255,255,255,.9);margin-bottom:22px;line-height:1.6;}
+    .options{display:flex;flex-direction:column;gap:12px;margin-bottom:20px;}
+    .opt-btn{padding:13px 20px;border-radius:15px;border:1.5px solid rgba(255,107,157,.3);background:rgba(255,255,255,.05);color:white;font-family:'Quicksand',sans-serif;font-size:.95rem;cursor:pointer;transition:all .25s;text-align:left;}
+    .opt-btn:hover{background:rgba(255,107,157,.2);border-color:var(--pink);transform:translateX(5px);}
+    .opt-btn.correct{background:linear-gradient(135deg,rgba(34,197,94,.3),rgba(16,185,129,.2));border-color:#4ade80;}
+    .opt-btn.wrong{background:rgba(239,68,68,.25);border-color:#f87171;}
+    .feedback-msg{font-family:'Dancing Script',cursive;font-size:1.3rem;min-height:36px;margin-bottom:10px;}
+    .feedback-msg.correct{color:#4ade80;}.feedback-msg.wrong{color:#f87171;}
+    .progress-bar-wrap{background:rgba(255,255,255,.1);border-radius:10px;height:6px;margin-bottom:20px;}
+    .progress-bar{height:100%;border-radius:10px;background:linear-gradient(90deg,var(--pink),var(--purple));transition:width .4s;}
+    .score-circle{width:110px;height:110px;border-radius:50%;background:linear-gradient(135deg,var(--pink),var(--purple));display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:2rem;font-weight:700;box-shadow:0 0 40px rgba(255,107,157,.5);animation:popIn .5s cubic-bezier(.17,.67,.4,1.4);}
+    @keyframes popIn{from{transform:scale(0);}to{transform:scale(1);}}
+    .result-title{font-family:'Dancing Script',cursive;font-size:clamp(1.8rem,5vw,2.8rem);margin-bottom:10px;}
+    .result-msg{color:rgba(255,255,255,.8);font-size:.95rem;line-height:1.7;margin-bottom:25px;}
+    .val-title{font-family:'Dancing Script',cursive;font-size:clamp(2rem,6vw,3.5rem);background:linear-gradient(135deg,#ff6b9d,#f9c74f);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:12px;line-height:1.2;}
+    .val-sub{color:rgba(255,255,255,.75);margin-bottom:30px;font-size:1rem;}
+    .val-btns{display:flex;gap:20px;justify-content:center;align-items:center;flex-wrap:wrap;}
+    #yes-btn{padding:16px 50px;background:linear-gradient(135deg,#ff6b9d,#e91e8c);border:none;border-radius:50px;color:white;font-size:1.2rem;font-family:'Quicksand',sans-serif;font-weight:700;cursor:pointer;box-shadow:0 5px 30px rgba(255,107,157,.6);transition:transform .2s;}
+    #yes-btn:hover{transform:scale(1.08);}
+    #no-btn{padding:14px 42px;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.25);border-radius:50px;color:rgba(255,255,255,.7);font-size:1.1rem;font-family:'Quicksand',sans-serif;font-weight:600;cursor:pointer;position:fixed;top:60%;left:50%;transform:translate(-50%,-50%);}
+    .poem-card{background:rgba(255,255,255,.07);backdrop-filter:blur(20px);border:1px solid rgba(249,199,79,.3);border-radius:30px;padding:40px 35px;max-width:600px;width:100%;text-align:center;}
+    .photo-circle{width:130px;height:130px;border-radius:50%;border:3px solid var(--gold);margin:0 auto 20px;overflow:hidden;box-shadow:0 0 30px rgba(249,199,79,.4);background:linear-gradient(135deg,#ff6b9d33,#c084fc33);display:flex;align-items:center;justify-content:center;font-size:3rem;}
+    .poem-title{font-family:'Dancing Script',cursive;font-size:clamp(1.8rem,5vw,2.8rem);color:var(--gold);margin-bottom:6px;}
+    .poem-date{color:rgba(255,255,255,.55);font-size:.85rem;margin-bottom:28px;}
+    .poem-body{font-family:'Dancing Script',cursive;font-size:clamp(1.05rem,3vw,1.3rem);color:rgba(255,255,255,.9);line-height:1.9;margin-bottom:28px;}
+    .poem-body span{color:var(--pink);}
+    .poem-sign{font-family:'Dancing Script',cursive;font-size:1.6rem;color:var(--gold);}
+    .firework{position:fixed;pointer-events:none;z-index:9999;animation:fw .9s ease forwards;}
+    @keyframes fw{0%{opacity:1;transform:translate(0,0) scale(1);}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.2);}}
+    .float-heart{position:absolute;animation:floatAround 3s ease-in-out infinite;pointer-events:none;}
+    @keyframes floatAround{0%,100%{transform:translateY(0) rotate(-10deg);opacity:.7;}50%{transform:translateY(-20px) rotate(10deg);opacity:1;}}
+    @media(max-width:480px){.card,.poem-card{padding:28px 22px;}.val-btns{flex-direction:column;}}
+  </style>
+</head>
+<body>
+<canvas id="stars-canvas"></canvas>
+<div class="heart-rain" id="heartRain"></div>
+
+<!-- PAGE 1 -->
+<div class="page active" id="page-intro">
+  <div class="card">
+    <div class="intro-emoji">💖</div>
+    <h1 class="intro-title">Hey, My Favourite Person…</h1>
+    <p class="intro-sub">I made this little world just for you.<br/>There are questions only <em>you</em> would know —<br/>because our story belongs only to us. 🌙✨</p>
+    <button class="btn" onclick="showPage('page-story')">Open Your Heart 💌</button>
+  </div>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page" id="page-story">
+  <div class="card">
+    <h2 class="timeline-title">✨ Our Beautiful Story ✨</h2>
+    <p class="timeline-sub">From strangers to soulmates — every chapter is magic.</p>
+    <div class="tl-item"><div class="tl-icon">🤝</div><div class="tl-text"><h3>Once Upon a Time… We Were Just Friends</h3><p>Two people crossing paths, not yet knowing what the universe was quietly building between them.</p></div></div>
+    <div class="tl-item"><div class="tl-icon">🌟</div><div class="tl-text"><h3>Then Came the Best-Friend Era</h3><p>Late nights, silly fights, deep talks — you slowly became the person I looked for in every room.</p></div></div>
+    <div class="tl-item"><div class="tl-icon">🌸</div><div class="tl-text"><h3>Falling, Without Even Noticing</h3><p>Your caring soul, your warmth, the way you just got me. I didn't plan to fall — I just did.</p></div></div>
+    <div class="tl-item"><div class="tl-icon">💫</div><div class="tl-text"><h3>October 26, 2023 — The Day Everything Changed</h3><p>The day we confessed. Two scared hearts choosing each other. Best decision of my life. 💕</p></div></div>
+    <div class="tl-item"><div class="tl-icon">🔥</div><div class="tl-text"><h3>Two Years, Countless Bickers — Zero Regrets</h3><p>We argue, we make up, you never leave even when I push you away. That's something rarer than love.</p></div></div>
+    <button class="btn" style="margin-top:10px;" onclick="startQuiz()">Take the Love Quiz 💘</button>
+  </div>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page" id="page-quiz">
+  <div class="card">
+    <p class="quiz-count" id="quiz-count">Question 1 / 5</p>
+    <div class="progress-bar-wrap"><div class="progress-bar" id="progress-bar" style="width:0%"></div></div>
+    <h2 class="quiz-title">💘 How Well Do You Know Us?</h2>
+    <p class="quiz-q" id="quiz-q"></p>
+    <div class="options" id="options"></div>
+    <p class="feedback-msg" id="feedback"></p>
+  </div>
+</div>
+
+<!-- PAGE 4 -->
+<div class="page" id="page-result">
+  <div class="card">
+    <div class="score-circle" id="score-circle"></div>
+    <h2 class="result-title" id="result-title"></h2>
+    <p class="result-msg" id="result-msg"></p>
+    <button class="btn" onclick="showPage('page-valentine')">Continue 💖</button>
+  </div>
+</div>
+
+<!-- PAGE 5 -->
+<div class="page" id="page-valentine">
+  <div class="card" style="max-width:520px;">
+    <div style="font-size:3.5rem;animation:pulse 1.2s infinite;">💝</div>
+    <h2 class="val-title">Will You Be My Valentine?</h2>
+    <p class="val-sub">Two years of us. Three Valentine's Days. A whole lifetime I'm still choosing every single day. 🌙</p>
+    <div class="val-btns">
+      <button id="yes-btn" onclick="showPoem()">Yes, Always 💖</button>
+      <button id="no-btn" onmouseover="floatAway(event)" ontouchstart="floatAway(event)">No 🙈</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 6 -->
+<div class="page" id="page-poem" style="position:relative;overflow:hidden;">
+  <div class="poem-card">
+    <div class="photo-circle">💑</div>
+    <h2 class="poem-title">My Favourite Chapter Is You</h2>
+    <p class="poem-date">October 26, 2023 → Forever & Beyond 🌙</p>
+    <div class="poem-body">
+      You were just a friend, a spark in the dark,<br/>
+      <span>You lit up the corners of my quiet heart.</span><br/><br/>
+      We argued, we laughed, I pushed — you stayed,<br/>
+      <span>A pure soul who never once walked away.</span><br/><br/>
+      In your presence my smile forgets how to hide,<br/>
+      <span>You are the warmth I keep tucked deep inside.</span><br/><br/>
+      Two years of choosing each other through the mess,<br/>
+      <span>Three Valentines — each one lovelier than the rest.</span><br/><br/>
+      You're not just my love, you're my safest place,<br/>
+      <span>My favourite story, my favourite face. 💫</span><br/><br/>
+      So here I am, heart open, no disguise —<br/>
+      <span>I'd fall for you in every single life.</span>
+    </div>
+    <p class="poem-sign">— Always yours, with all my love 💕</p>
+  </div>
+  <span class="float-heart" style="top:8%;left:5%;font-size:1.5rem;animation-delay:0s">💖</span>
+  <span class="float-heart" style="top:15%;right:7%;font-size:1.2rem;animation-delay:.5s">🌸</span>
+  <span class="float-heart" style="bottom:12%;left:8%;font-size:1.3rem;animation-delay:1s">✨</span>
+  <span class="float-heart" style="bottom:20%;right:5%;font-size:1.1rem;animation-delay:1.5s">💫</span>
+</div>
+
+<script>
+(function(){const c=document.getElementById('stars-canvas'),ctx=c.getContext('2d');let stars=[];function resize(){c.width=innerWidth;c.height=innerHeight;stars=[];for(let i=0;i<180;i++)stars.push({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*1.6+.2,a:Math.random(),da:.003+Math.random()*.007});}function draw(){ctx.clearRect(0,0,c.width,c.height);stars.forEach(s=>{s.a+=s.da;if(s.a>1||s.a<0)s.da*=-1;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(255,220,240,${s.a})`;ctx.fill();});requestAnimationFrame(draw);}window.addEventListener('resize',resize);resize();draw();})();
+
+(function(){const c=document.getElementById('heartRain');const e=['💖','💕','🌸','✨','💫','🌙','💗'];for(let i=0;i<22;i++){const el=document.createElement('span');el.className='h-drop';el.textContent=e[Math.floor(Math.random()*e.length)];el.style.left=Math.random()*100+'%';el.style.animationDuration=(7+Math.random()*10)+'s';el.style.animationDelay=(Math.random()*12)+'s';el.style.fontSize=(.8+Math.random()*.8)+'rem';c.appendChild(el);}})();
+
+function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+
+const questions=[
+  {q:"What were we to each other before love found us? 🤔",opts:["Strangers who never spoke","Just friends, then best friends ","Classmates who argued","Neighbours from childhood"],ans:1,c:"Aww yes! Friends first — the most beautiful beginning 💖",w:"Think again, baby 🙈 Our roots run deeper than that!"},
+  {q:"On which magical date did we confess our feelings? 🗓️",opts:["February 14, 2023","December 31, 2022","October 26, 2023 ","March 8, 2024"],ans:2,c:"October 26, 2023 — the day that changed everything forever",w:"That's not right… our special date lives in my heart always 💕"},
+  {q:"This is our ___ Valentine's Day together 🌹",opts:["1st","2nd","3rd 🎉","4th"],ans:2,c:"Our 3rd Valentine's! Every year sweeter than the last ",w:"We've been through more Valentine's than that, silly "},
+  {q:"Even when I told you to leave… what did you do? 💔",opts:["Left without looking back","Asked why and disappeared","Stayed and never gave up on us ","Ignored me for weeks"],ans:2,c:"You stayed. That's the whole story. That's why I love you so much 🥺💖",w:"You know what you really did… and it means the entire world to me 🌟"},
+  {q:"What do I call you in my heart? 🌙",opts:["My roommate 😂","A sparkle in my dark life ✨","Just a good friend","My annoying partner"],ans:1,c:"Yes! You are THE sparkle in my dark life — always and forever ",w:"Close… but the real answer is even more beautiful 🌸"}
+];
+
+let cQ=0,score=0,answered=false;
+function startQuiz(){cQ=0;score=0;showPage('page-quiz');renderQ();}
+function renderQ(){
+  answered=false;const q=questions[cQ];
+  document.getElementById('quiz-count').textContent=`Question ${cQ+1} / ${questions.length}`;
+  document.getElementById('progress-bar').style.width=((cQ/questions.length)*100)+'%';
+  document.getElementById('quiz-q').textContent=q.q;
+  document.getElementById('feedback').textContent='';document.getElementById('feedback').className='feedback-msg';
+  const opts=document.getElementById('options');opts.innerHTML='';
+  q.opts.forEach((o,i)=>{const btn=document.createElement('button');btn.className='opt-btn';btn.textContent=o;btn.onclick=()=>pick(i,btn);opts.appendChild(btn);});
+}
+function pick(i,btn){
+  if(answered)return;answered=true;
+  const q=questions[cQ];const all=document.querySelectorAll('.opt-btn');
+  all.forEach(b=>b.style.pointerEvents='none');
+  const fb=document.getElementById('feedback');
+  if(i===q.ans){btn.classList.add('correct');score++;fb.textContent='💖 '+q.c;fb.className='feedback-msg correct';}
+  else{btn.classList.add('wrong');all[q.ans].classList.add('correct');fb.textContent='💔 '+q.w;fb.className='feedback-msg wrong';}
+  setTimeout(()=>{cQ++;if(cQ<questions.length)renderQ();else showResult();},2200);
+}
+function showResult(){
+  showPage('page-result');
+  document.getElementById('score-circle').textContent=score+'/'+questions.length;
+  let t,m;
+  if(score===5){t='💯 You Know Me Perfectly! 🌟';m='5 out of 5! You are truly my person — you hold every piece of our story in your heart. I love you so, so much. This is exactly why I keep choosing you every single day. 💖';}
+  else if(score>=3){t='💕 You Know Our Story So Well!';m=`${score} out of 5! You carry our memories beautifully. A few gaps, but that just means more stories to create together. Our best chapters are still unwritten. 🌙✨`;}
+  else{t='🌸 We Have More to Discover Together!';m=`${score} out of 5! But honestly? The best part of us isn't a quiz answer — it's every moment we've lived together. You're still my everything. 💫`;}
+  document.getElementById('result-title').textContent=t;
+  document.getElementById('result-msg').textContent=m;
+}
+
+let nm=0;
+function floatAway(e){
+  e.preventDefault();nm++;
+  const btn=document.getElementById('no-btn');
+  const vw=window.innerWidth,vh=window.innerHeight,bw=btn.offsetWidth,bh=btn.offsetHeight;
+  btn.style.left=Math.floor(Math.random()*(vw-bw))+'px';btn.style.top=Math.floor(Math.random()*(vh-bh))+'px';
+  if(nm>=5)btn.style.opacity='.15';if(nm>=8)btn.style.display='none';
+}
+
+let fwInt=null;
+function showPoem(){
+  showPage('page-poem');
+  const nb=document.getElementById('no-btn');if(nb)nb.style.display='none';
+  burst();fwInt=setInterval(burst,2500);setTimeout(()=>clearInterval(fwInt),9000);
+}
+function burst(){
+  const e=['💖','🌸','✨','💫','🎉','🌟','💕','🩷','🌹'];
+  for(let i=0;i<25;i++){setTimeout(()=>{const el=document.createElement('span');el.className='firework';el.textContent=e[Math.floor(Math.random()*e.length)];el.style.left=Math.random()*100+'vw';el.style.top=Math.random()*100+'vh';el.style.setProperty('--dx',(Math.random()*240-120)+'px');el.style.setProperty('--dy',(Math.random()*240-120)+'px');el.style.fontSize=(1+Math.random()*1.8)+'rem';document.body.appendChild(el);setTimeout(()=>el.remove(),950);},i*70);}
+}
+</script>
+</body>
+</html>
